@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=Jobecoin Core
+Comment=Connect to the Jobecoin P2P Network
+Comment[de]=Verbinde mit dem Jobecoin peer-to-peer Netzwerk
+Comment[fr]=Jobecoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Jobecoin, eşten eşe kriptografik sanal para birimi
+Exec=jobecoin-qt %u
+Terminal=false
+Type=Application
+Icon=jobecoin128
+MimeType=x-scheme-handler/jobecoin;
+Categories=Office;Finance;
+StartupWMClass=Jobecoin-qt

@@ -1,0 +1,25 @@
+# It is not recommended to modify this file in-place, because it will
+# be overwritten during package upgrades. If you want to add further
+# options or overwrite existing ones then use
+# $ systemctl edit jobecoind.service
+# See "man systemd.service" for details.
+
+# Note that almost all daemon options could be specified in
+# /etc/jobecoin/jobecoin.conf
+
+[Unit]
+Description=Jobecoin daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/jobecoind -daemon -conf=/etc/jobecoin/jobecoin.conf -pid=/run/jobecoind/jobecoind.pid
+# Creates /run/jobecoind owned by jobecoin
+RuntimeDirectory=jobecoind
+User=jobecoin
+Type=forking
+PIDFile=/run/jobecoind/jobecoind.pid
+Restart=on-failure
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

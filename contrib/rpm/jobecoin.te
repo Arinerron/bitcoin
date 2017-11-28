@@ -1,0 +1,81 @@
+policy_module(jobecoin, 1.100.1)
+
+########################################
+#
+# Declarations
+#
+
+type jobecoin_t;
+type jobecoin_exec_t;
+init_daemon_domain(jobecoin_t, jobecoin_exec_t)
+
+permissive jobecoin_t;
+
+type jobecoin_initrc_exec_t;
+init_script_file(jobecoin_initrc_exec_t)
+
+type jobecoin_conf_t;
+files_type(jobecoin_conf_t)
+
+type jobecoin_var_lib_t;
+files_type(jobecoin_var_lib_t)
+
+type jobecoin_var_run_t;
+files_type(jobecoin_var_run_t)
+
+type jobecoin_port_t;
+corenet_port(jobecoin_port_t)
+
+########################################
+#
+# jobecoin local policy
+#
+allow jobecoin_t self:process { fork };
+
+allow jobecoin_t self:fifo_file rw_fifo_file_perms;
+allow jobecoin_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_dirs_pattern(jobecoin_t, jobecoin_conf_t, jobecoin_conf_t)
+manage_files_pattern(jobecoin_t, jobecoin_conf_t, jobecoin_conf_t)
+
+manage_dirs_pattern(jobecoin_t, jobecoin_var_lib_t, jobecoin_var_lib_t)
+manage_files_pattern(jobecoin_t, jobecoin_var_lib_t, jobecoin_var_lib_t)
+files_var_lib_filetrans(jobecoin_t, jobecoin_var_lib_t, { dir file })
+
+manage_dirs_pattern(jobecoin_t, jobecoin_var_run_t, jobecoin_var_run_t)
+manage_files_pattern(jobecoin_t, jobecoin_var_run_t, jobecoin_var_run_t)
+
+sysnet_dns_name_resolve(jobecoin_t)
+corenet_all_recvfrom_unlabeled(jobecoin_t)
+
+allow jobecoin_t self:tcp_socket create_stream_socket_perms;
+corenet_tcp_sendrecv_generic_if(jobecoin_t)
+corenet_tcp_sendrecv_generic_node(jobecoin_t)
+corenet_tcp_sendrecv_all_ports(jobecoin_t)
+corenet_tcp_bind_generic_node(jobecoin_t)
+
+gen_require(`
+    type jobecoin_port_t;
+')
+allow jobecoin_t jobecoin_port_t:tcp_socket name_bind;
+
+gen_require(`
+    type jobecoin_port_t;
+')
+allow jobecoin_t jobecoin_port_t:tcp_socket name_connect;
+
+domain_use_interactive_fds(jobecoin_t)
+
+files_read_etc_files(jobecoin_t)
+
+miscfiles_read_localization(jobecoin_t)
+
+sysnet_dns_name_resolve(jobecoin_t)
+
+allow jobecoin_t jobecoin_exec_t:file execute_no_trans;
+allow jobecoin_t self:process setsched;
+corecmd_exec_ls(jobecoin_t)
+corenet_tcp_connect_http_port(jobecoin_t)
+dev_read_urand(jobecoin_t)
+fs_getattr_xattr_fs(jobecoin_t)
+kernel_read_system_state(jobecoin_t)

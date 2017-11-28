@@ -1,0 +1,6 @@
+usr/local/bin/jobecoin-qt usr/bin
+share/pixmaps/jobecoin32.xpm usr/share/pixmaps
+share/pixmaps/jobecoin16.xpm usr/share/pixmaps
+share/pixmaps/jobecoin128.png usr/share/pixmaps
+debian/jobecoin-qt.desktop usr/share/applications
+debian/jobecoin-qt.protocol usr/share/kde4/services/

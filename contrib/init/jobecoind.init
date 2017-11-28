@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#  jobecoind The jobecoin core server.
+#
+#
+# chkconfig: 345 80 20
+# description: jobecoind
+# processname: jobecoind
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/jobecoind, see below
+if [ -f /etc/sysconfig/jobecoind ]; then
+        . /etc/sysconfig/jobecoind
+fi
+
+RETVAL=0
+
+prog=jobecoind
+# you can override the lockfile via JOBECOIND_LOCKFILE in /etc/sysconfig/jobecoind
+lockfile=${JOBECOIND_LOCKFILE-/var/lock/subsys/jobecoind}
+
+# jobecoind defaults to /usr/bin/jobecoind, override with JOBECOIND_BIN
+jobecoind=${JOBECOIND_BIN-/usr/bin/jobecoind}
+
+# jobecoind opts default to -disablewallet, override with JOBECOIND_OPTS
+jobecoind_opts=${JOBECOIND_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $jobecoind $jobecoind_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac

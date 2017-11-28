@@ -1,0 +1,8 @@
+/usr/bin/jobecoin-cli		--	gen_context(system_u:object_r:jobecoin_exec_t,s0)
+/usr/sbin/jobecoind		--	gen_context(system_u:object_r:jobecoin_exec_t,s0)
+/usr/lib(64)?/jobecoin/jobecoind		--	gen_context(system_u:object_r:jobecoin_exec_t,s0)
+
+/etc/jobecoin(/.*)?		gen_context(system_u:object_r:jobecoin_conf_t,s0)
+/var/lib/jobecoin(/.*)?		gen_context(system_u:object_r:jobecoin_var_lib_t,s0)
+
+(/var)?/run/jobecoind(/.*)?   gen_context(system_u:object_r:jobecoin_var_run_t,s0)
